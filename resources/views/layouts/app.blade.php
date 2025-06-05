@@ -38,9 +38,6 @@
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
         <!-- Responsive CSS -->
         <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
-
-        <!-- Styles -->
-        @stack('styles')
     </head>
 
     <body>
@@ -116,9 +113,6 @@
         <script src="{{ asset('assets/js/jquery-validate/jquery.validate.min.js') }}"></script>
         <!-- Scripts JS -->
         <script src="{{ asset('assets/js/scripts.js') }}"></script>
-
-        <!-- Scripts -->
-        @stack('scripts')
 
         <!-- Sessions Message -->
         @include('partials.message')

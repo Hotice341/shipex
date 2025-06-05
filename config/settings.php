@@ -14,5 +14,8 @@ return [
         'title' => 'Shipex',
         'tagline' => 'Logistic & Shipping Company',
         'description' => 'We pride ourselves on providing the best transport and shipping services available all over the world.',
+        'email' => 'no-reply@pbminfotech.com',
+        'phone' => '(888)1234567',
+        'address' => 'San Francisco, CA 94103, USA'
     ],
 ];
