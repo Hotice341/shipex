@@ -47,7 +47,7 @@
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<your-username>/flypathexpress.git
+git clone https://github.com/Hotice341/shipex.git
 cd flypathexpress
 
 # 2. Install backend and frontend dependencies
