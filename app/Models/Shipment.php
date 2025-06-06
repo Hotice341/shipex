@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 /**
  * @method static create(array $validated)
+ * @method static orderBy(string $string, string $string1)
+ * @method static count()
  */
 class Shipment extends Model
 {

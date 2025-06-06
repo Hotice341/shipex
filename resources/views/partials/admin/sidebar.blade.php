@@ -19,7 +19,7 @@
 
                 <div class="w-100 ps-2 ms-1 ms-lg-0 ps-lg-0">
                     <h4 class="h6 mb-1 mb-lg-2">{{ auth()->user()->name }}</h4>
-                    <p class="fs-sm mb-0">Reliable Logistic & Transport Solutions Saves You Time!</p>
+                    <p class="fs-sm mb-0">Reliable Logistic & Shipping Company</p>
                 </div>
             </div>
 
@@ -34,14 +34,9 @@
                     Dashboard
                 </a>
 
-                <a class="list-group-item list-group-item-action d-flex align-items-center rounded-pill {{ isActive('admin.shipments') }}" href="{{ route('admin.shipments') }}">
+                <a class="list-group-item list-group-item-action d-flex align-items-center rounded-pill {{ isActive('admin.shipments.*') }}" href="{{ route('admin.shipments') }}">
                     <i class="ci-layers fs-base opacity-75 me-2"></i>
-                    Shipments (4)
-                </a>
-
-                <a class="list-group-item list-group-item-action d-flex align-items-center rounded-pill {{ isActive('admin.reports') }}" href="{{ route('admin.reports') }}">
-                    <i class="ci-pie-chart fs-base opacity-75 me-2"></i>
-                    Reports
+                    Shipments ({{ $shipmentsCount }})
                 </a>
 
                 <a class="list-group-item list-group-item-action d-flex align-items-center rounded-pill" href="/tracking" target="_blank">

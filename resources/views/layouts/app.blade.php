@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ config('app.name', 'Shipex') }} | {{ config('setting.site.tagline', 'Logistic & Shipping Company') }}</title>
+        <title>{{ config('app.name', 'Shipex') }} | {{ config('setting.site.tagline', 'Reliable Logistic & Shipping Company') }}</title>
         <meta name="robots" content="noindex, follow">
         <meta name="description" content="{{ config('settings.site.description', '') }}" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -72,9 +72,6 @@
             </div>
         </div>
         <!-- Scroll To Top End -->
-
-        <!-- Modals -->
-        @include('partials.modals')
 
         <!-- JS
         ============================================ -->

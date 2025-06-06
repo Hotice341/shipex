@@ -24,7 +24,7 @@
                 <ul class="dropdown-menu dropdown-menu-end" style="--cz-dropdown-spacer: .625rem">
                     <li><span class="h6 dropdown-header">{{ auth()->user()->name }}</span></li>
                     <li>
-                        <a class="dropdown-item" href="account-marketplace-dashboard.html">
+                        <a class="dropdown-item" href="{{ route('admin.dashboard')  }}">
                             <i class="ci-grid fs-base opacity-75 me-2"></i>
                             Dashboard
                         </a>
@@ -33,14 +33,7 @@
                     <li>
                         <a class="dropdown-item {{ isActive('admin.shipments') }}" href="{{ route('admin.shipments') }}">
                             <i class="ci-layers fs-base opacity-75 me-2"></i>
-                            Shipments (4)
-                        </a>
-                    </li>
-
-                    <li>
-                        <a class="dropdown-item {{ isActive('admin.reports') }}" href="{{ route('admin.reports') }}">
-                            <i class="ci-pie-chart fs-base opacity-75 me-2"></i>
-                            Reports
+                            Shipments ({{ $shipmentsCount }})
                         </a>
                     </li>
 

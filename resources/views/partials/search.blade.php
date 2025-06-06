@@ -6,8 +6,11 @@
         </svg>
     </div>
     <div class="pbmit-search-outer">
-        <form class="pbmit-site-searchform">
-            <input type="search" class="form-control field searchform-s" name="s" placeholder="Search …">
+        <form class="pbmit-site-searchform" action="{{ route('tracking') }}" method="get">
+            <input type="search" class="form-control field searchform-s" name="tracking_code" value="{{ old('tracking_code', request('tracking_code')) }}" autocomplete="off" autofocus placeholder="Enter tracking number">
+            @error('tracking_code')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
             <button type="submit"></button>
         </form>
     </div>

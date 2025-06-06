@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light" data-pwa="true">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
         <meta name="description" content="{{ config('settings.site.description', '') }}" />
-        <title>{{ config('app.name', 'Shipex') }} | {{ config('setting.site.tagline', 'Logistic & Shipping Company') }}</title>
-
-        <!-- Theme switcher (color modes) -->
-        <script src="{{ asset('admin/js/theme-switcher.js') }}"></script>
+        <title>{{ config('app.name', 'Shipex') }} | {{ config('setting.site.tagline', 'Reliable Logistic & Shipping Company') }}</title>
+        
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/fevicon.png') }}">
 
         <!-- Preloaded local web font (Inter) -->
         <link rel="preload" href="{{ asset('admin/fonts/inter-variable-latin.woff2') }}" as="font" type="font/woff2" crossorigin="">

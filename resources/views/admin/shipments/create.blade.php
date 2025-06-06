@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-    <!-- Account settings content -->
+    <!-- Shipment content -->
     <div class="col-lg-9 pt-2 pt-xl-3">
         <!-- Page title -->
         <h1 class="h2 pb-1 pb-sm-2 pb-md-3">Create Shipment</h1>
@@ -68,7 +68,7 @@
 
                     <!-- Shipping Information -->
                     <h2 class="h5 mb-3">Shipping Information</h2>
-                    <div class="shipping-address-section mb-5">
+                    <div class="shipping-address-section mb-3">
                         <div class="alert alert-info mb-3 small text-start" role="alert">
                             Please provide accurate shipping details, including origin, destination, and shipment type, to ensure smooth processing and delivery of your package.
                         </div>

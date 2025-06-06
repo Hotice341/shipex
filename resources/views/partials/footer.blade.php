@@ -80,10 +80,10 @@
                             <h2 class="widget-title">Useful Link</h2>
                             <ul class="menu">
                                 <li><a href="/">Home</a></li>
-                                <li><a href="/about-us">About Us</a></li>
-                                <li><a href="/faq">Help & Faqs</a></li>
+                                <li><a href="#pbmit-about-us">About Us</a></li>
+                                <li><a href="#pbmit-faqs">Help & Faqs</a></li>
                                 <li><a href="mailto:{{ config('settings.site.email') }}">Contact Us</a></li>
-                                <li><a href="/tracking">Track & Trace</a></li>
+                                <li><a href="{{ route('tracking') }}">Track Shipment</a></li>
                             </ul>
                         </aside>
                     </div>
@@ -92,11 +92,11 @@
                         <aside class="widget widget_text">
                             <h2 class="widget-title">Our Services</h2>
                             <ul class="menu">
-                                <li><a href="blog-classic.html">Logistics</a></li>
-                                <li><a href="blog-classic.html">Manufacturing</a></li>
-                                <li><a href="blog-classic.html">Production</a></li>
-                                <li><a href="blog-classic.html">Transportation</a></li>
-                                <li><a href="blog-classic.html">Warehouse</a></li>
+                                <li><a href="/">Logistics</a></li>
+                                <li><a href="/">Manufacturing</a></li>
+                                <li><a href="/">Production</a></li>
+                                <li><a href="/">Transportation</a></li>
+                                <li><a href="/">Warehouse</a></li>
                             </ul>
                         </aside>
                     </div>

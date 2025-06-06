@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\TestEmailNotification;
+use App\Models\Shipment;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -17,9 +18,34 @@ use Mail;
 
 class DashboardController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        return view('admin.dashboard');
+        // Initialize query
+        $query = Shipment::query();
+
+        // Handle search
+        if ($search = $request->query('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_code', 'like', "%{$search}%")
+                    ->orWhere('sender_name', 'like', "%{$search}%")
+                    ->orWhere('receiver_name', 'like', "%{$search}%");
+            });
+        }
+
+        // Handle sort
+        $sort = $request->query('sort', 'newest');
+        $order = $sort === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $order);
+
+        // Get paginated shipments
+        $shipments = $query->paginate(10)->appends(['search' => $search, 'sort' => $sort]);
+
+        return view('admin.dashboard', [
+            'shipments' => $shipments
+        ]);
     }
 
     /**
@@ -158,8 +184,12 @@ class DashboardController extends Controller
 
         try {
 
-            // Send test email
-            Mail::to($request->input('email'))->send(new TestEmailNotification($request->input('email')));
+            // Send email
+            if (config('settings.email_notification')) {
+                // Send test email
+                Mail::mailer(config('settings.email_provider'))->to($request->input('email'))
+                    ->send(new TestEmailNotification($request->input('email')));
+            }
 
             return redirect()->back()->with('success', 'Test email sent successfully to: ' . $request->input('email'));
         } catch (Exception $e) {

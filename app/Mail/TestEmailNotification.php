@@ -40,7 +40,7 @@ class TestEmailNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.test-email-notification',
+            view: 'emails.test-email-notification',
         );
     }
 

@@ -4,6 +4,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ShipmentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\SessionController;
+use Illuminate\Http\Request;
+use App\Models\Shipment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,14 +62,89 @@ Route::prefix('admin')->name('admin.')
 
             // Edit
             Route::get('/shipments/{shipment}/edit', 'edit')->name('shipments.edit');
-            Route::patch('/shipments/{shipment}/update', 'update')->name('shipments.update');
+            Route::put('/shipments/{shipment}/update', 'update')->name('shipments.update');
 
             // Delete
             Route::delete('/shipments/{shipment}/delete', 'destroy')->name('shipments.destroy');
         });
 
-        // Shipment Reports
-        Route::get('/shipments/reports', 'reports')->name('reports');
+        // Shipments Api
+        Route::get('/shipments-chart', function(Request $request) {
+            sleep(1);
+            $period = $request->input('period', 'current_month');
+
+            $query = Shipment::select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('COUNT(*) as total')
+            )
+                ->groupBy('date')
+                ->orderBy('date');
+
+            // Apply date filters
+            $now = now();
+            switch ($period) {
+                case 'last_month':
+                    $query->whereBetween('created_at', [
+                        $now->clone()->subMonth()->startOfMonth(),
+                        $now->clone()->subMonth()->endOfMonth()
+                    ]);
+                    break;
+                case 'last_3_months':
+                    $query->whereBetween('created_at', [
+                        $now->clone()->subMonths(3)->startOfMonth(),
+                        $now->clone()->endOfMonth()
+                    ]);
+                    break;
+                case 'last_6_months':
+                    $query->whereBetween('created_at', [
+                        $now->clone()->subMonths(6)->startOfMonth(),
+                        $now->clone()->endOfMonth()
+                    ]);
+                    break;
+                case 'last_year':
+                    $query->whereBetween('created_at', [
+                        $now->clone()->subYear()->startOfYear(),
+                        $now->clone()->endOfYear()
+                    ]);
+                    break;
+                default: // current_month
+                    $query->whereBetween('created_at', [
+                        $now->clone()->startOfMonth(),
+                        $now->clone()->endOfMonth()
+                    ]);
+            }
+
+            $shipments = $query->get();
+
+            // Format data for chart
+            $labels = [];
+            $totals = [];
+
+            foreach ($shipments as $shipment) {
+                $labels[] = Carbon::parse($shipment->date)->format('d M');
+                $totals[] = (int) $shipment->total;
+            }
+
+            return response()->json([
+                'labels' => $labels,
+                'datasets' => [
+                    [
+                        'label' => 'Total Shipments',
+                        'data' => $totals,
+                    ]
+                ]
+            ]);
+        });
+        
+        // Clear cache
+        Route::get('/clear-cache', function() {
+            Artisan::call('cache:clear');
+            Artisan::call('view:clear');
+            Artisan::call('route:clear');
+            Artisan::call('config:clear');
+            
+            return redirect()->back()->with('success', 'All caches cleared successfully!');
+        })->name('admin.clear-cache');
 });
 
 /*
@@ -75,12 +153,10 @@ Route::prefix('admin')->name('admin.')
 |--------------------------------------------------------------------------
 */
 Route::view('/', 'home.index');
-Route::view('/about-us', 'home.about');
-Route::view('/faq', 'home.faq');
 
 /*
 |--------------------------------------------------------------------------
 | Tracking Routes
 |--------------------------------------------------------------------------
 */
-Route::view('/tracking', 'tracking.index');
+Route::get('/tracking', [ShipmentController::class, 'show'])->name('tracking');

@@ -7,7 +7,14 @@
                         <div class="site-branding">
                             <h1 class="site-title">
                                 <a href="/">
-                                    <img class="logo-img" src="{{ asset('assets/images/logo-white.svg') }}" alt="Shipex">
+                                    <span class="text-light me-2 fs-5 fw-medium">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 135.45 135.45">
+                                            <title>logo-white</title>
+                                            <path d="M0,0V86.08L91.13,44.32,49.37,135.45h86.08V0ZM80.73,122.46,122.46,13,13,54.72V13H122.46V122.46Z" fill="#fff"></path>
+                                            <path d="M9.14,95.23l31.08,31.08,26.3-57.38Zm26.33,6.49-7.69,7.69L26,107.67,33.73,100Zm12-12-7.69,7.69L38,95.69,45.71,88Zm4.29-4.29L50,83.71,57.69,76l1.73,1.74Z" fill="#fff"></path>
+                                        </svg>
+                                        {{ config('app.name', 'Shipex') }}
+                                    </span>
                                 </a>
                             </h1>
                         </div>
@@ -36,17 +43,11 @@
                                             <ul class="navigation clearfix">
                                                 <li><a href="/">Home</a></li>
 
-                                                <li class="menu-item"><a href="/about-us">About Us</a></li>
+                                                <li class="menu-item"><a href="#pbmit-about">About Us</a></li>
 
-                                                <li class="dropdown">
-                                                    <a href="#">Services</a>
-                                                    <ul>
-                                                        <li><a href="services.html">Warehousing</a></li>
-                                                        <li><a href="service-details.html">Service Detail</a></li>
-                                                    </ul>
-                                                </li>
+                                                <li class="menu-item"><a href="#pbmit-services">Our Services</a></li>
 
-                                                <li><a href="/faqs">Help & Faqs</a></li>
+                                                <li><a href="#pbmit-faqs">Help & Faqs</a></li>
 
                                                 <li><a href="mailto:{{ config('settings.site.email') }}">Contact Us</a></li>
                                             </ul>
@@ -104,9 +105,9 @@
                         </div>
 
                         <div class="pbmit-header-button2">
-                            <a class="pbmit-btn" href="/tracking">
+                            <a class="pbmit-btn" href="{{ route('tracking') }}">
                                 <span class="pbmit-button-content-wrapper">
-                                    <span class="pbmit-button-text">Track & Trace</span>
+                                    <span class="pbmit-button-text">Track Shipment</span>
                                 </span>
                             </a>
                         </div>
@@ -129,7 +130,14 @@
                     <div class="wrap">
                         <h1 class="site-title">
                             <a href="#" rel="home">
-                                <img class="pbmit-main-logo" src="{{ asset('assets/images/logo.svg') }}" alt="Shipex Demo3" title="Shipex Demo3">
+                                <span class="text-dark me-2 fs-5 fw-medium">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 135.45 135.45">
+                                        <title>logo-white</title>
+                                        <path d="M0,0V86.08L91.13,44.32,49.37,135.45h86.08V0ZM80.73,122.46,122.46,13,13,54.72V13H122.46V122.46Z" fill="#08152d" />
+                                        <path d="M9.14,95.23l31.08,31.08,26.3-57.38Zm26.33,6.49-7.69,7.69L26,107.67,33.73,100Zm12-12-7.69,7.69L38,95.69,45.71,88Zm4.29-4.29L50,83.71,57.69,76l1.73,1.74Z" fill="#2a5ba9" />
+                                    </svg>
+                                    {{ config('app.name', 'Shipex') }}
+                                </span>
                             </a>
                         </h1>
                     </div>
@@ -151,20 +159,11 @@
                     <ul class="menu">
                         <li class="menu-item"><a href="/">Home</a></li>
 
-                        <li class="menu-item"><a href="/about-us">About Us</a></li>
+                        <li class="menu-item"><a href="#pbmit-about">About Us</a></li>
 
-                        <li class="menu-item">
-                            <a href="#">Services</a>
-                            <span class="sub-menu-toggle">
-                                <i class="pbmit-base-icon-down-open-big"></i>
-                            </span>
-                            <ul class="sub-menu" style="display: none;">
-                                <li><a href="services.html">Services</a></li>
-                                <li><a href="service-details.html">Service Detail</a></li>
-                            </ul>
-                        </li>
+                        <li class="menu-item"><a href="#pbmit-services">Our Services</a></li>
 
-                        <li class="menu-item"><a href="/faqs">Help & Faqs</a></li>
+                        <li class="menu-item"><a href="#pbmit-faqs">Help & Faqs</a></li>
 
                         <li class="menu-item"><a href="mailto:{{ config('settings.site.email') }}">Contact Us</a></li>
                     </ul>

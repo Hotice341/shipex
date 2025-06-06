@@ -17,9 +17,31 @@ class ShipmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.shipments.index');
+        // Initialize query
+        $query = Shipment::query();
+
+        // Handle search
+        if ($search = $request->query('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tracking_code', 'like', "%$search%")
+                    ->orWhere('sender_name', 'like', "%$search%")
+                    ->orWhere('receiver_name', 'like', "%$search%");
+            });
+        }
+
+        // Handle sort
+        $sort = $request->query('sort', 'newest');
+        $order = $sort === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $order);
+
+        // Get paginated shipments
+        $shipments = $query->paginate(10)->appends(['search' => $search, 'sort' => $sort]);
+
+        return view('admin.shipments.index', [
+            'shipments' => $shipments
+        ]);
     }
 
     /**
@@ -70,12 +92,15 @@ class ShipmentController extends Controller
         // Store the shipment
         $shipment = Shipment::create($validated);
 
-        // Send email to sender
-        Mail::to($shipment->sender_email)->send(new ShipmentCreated($shipment));
+        // Send email
+        if (config('settings.email_notification')) {
+            // Send email to sender
+            Mail::mailer(config('settings.email_provider'))->to($shipment->sender_email)->send(new ShipmentCreated($shipment));
 
-        // Send notification to receiver if notify_receiver is checked
-        if ($shipment->notify_receiver) {
-            Mail::to($shipment->receiver_email)->send(new ShipmentNotification($shipment));
+            // Send notification to receiver if notify_receiver is checked
+            if ($shipment->notify_receiver) {
+                Mail::to($shipment->receiver_email)->send(new ShipmentNotification($shipment));
+            }
         }
 
         return redirect()->route('admin.shipments')->with('success', 'Shipment created successfully.');
@@ -84,9 +109,16 @@ class ShipmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Shipment $shipment)
+    public function show(Request $request)
     {
-        //
+        $request->validate([
+            'tracking_code' => 'sometimes|string',
+        ]);
+
+        $shipment = Shipment::where('tracking_code', $request->tracking_code)->first();
+        return view('tracking.index', [
+            'shipment' => $shipment,
+        ]);
     }
 
     /**
@@ -94,7 +126,13 @@ class ShipmentController extends Controller
      */
     public function edit(Shipment $shipment)
     {
-        //
+        $countriesResponse = Geolocation::handleLocationRequest('countries');
+        $countries = $countriesResponse->getData(true)['data'] ?? [];
+
+        return view('admin.shipments.edit', [
+            'countries' => $countries,
+            'shipment' => $shipment,
+        ]);
     }
 
     /**
@@ -102,7 +140,37 @@ class ShipmentController extends Controller
      */
     public function update(Request $request, Shipment $shipment)
     {
-        //
+        $validated = $request->validate([
+            'sender_name' => 'required|string|max:255',
+            'sender_email' => 'required|email|max:255',
+            'sender_address' => 'required|string|max:255',
+            'receiver_name' => 'required|string|max:255',
+            'receiver_email' => 'required|email|max:255',
+            'receiver_address' => 'required|string|max:255',
+            'origin' => 'required|string',
+            'destination' => 'required|string',
+            'shipment_type' => 'required|in:standard,express,overnight,international_shipping,local,air_freight,truckload,van_move,ocean_freight,road_freight',
+            'payment_mode' => 'required|in:cash_on_delivery,credit_card,debit_card,bank_transfer,mobile_payment,paypal,check',
+            'shipped_via' => 'required|string|max:255',
+            'departure_date' => 'required|date|after_or_equal:today',
+            'arrival_date' => 'required|date|after_or_equal:departure_date',
+            'status' => 'required|in:pending,processing,shipped,in_transit,out_for_delivery,delivered,failed_delivery,held_by_customs,on_hold,awaiting_pickup,cancelled,returned,lost',
+            'notify_receiver' => 'nullable|boolean',
+            'comments' => 'nullable|string|max:1000',
+        ]);
+
+        $shipment->update($validated);
+        
+        // Send email
+        if (config('settings.email_notification')) {
+            
+            // Send notification to receiver if notify_receiver is checked
+            if ($shipment->notify_receiver) {
+                Mail::to($shipment->receiver_email)->send(new ShipmentNotification($shipment));
+            }
+        }
+
+        return redirect()->route('admin.shipments')->with('success', 'Shipment updated successfully.');
     }
 
     /**
@@ -110,6 +178,7 @@ class ShipmentController extends Controller
      */
     public function destroy(Shipment $shipment)
     {
-        //
+        $shipment->delete();
+        return redirect()->route('admin.shipments')->with('success', 'Shipment deleted successfully.');
     }
 }
